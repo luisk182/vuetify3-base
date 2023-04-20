@@ -1,5 +1,5 @@
 <template>
-  <v-snackbar v-model="modelValue">
+  <v-snackbar v-model="show">
     {{ message }}
   <template v-slot:actions>
     <v-btn
@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, onMounted } from "vue";
+  import { defineComponent, ref, onMounted, computed } from "vue";
 
   export default defineComponent({
     name: 'Toaster',
@@ -37,16 +37,22 @@
       },
       modelValue: Boolean,
     },
-    setup(props, context){
+    setup(props, {emit}){
+      const show = computed({ 
+        get: () => props.modelValue, 
+        set: (value) => emit('update:modelValue', value) 
+      })
+
       onMounted(()=>{
         console.log(props)
       })
       const closeSnackBar = () => {
-        context.emit("update:modelValue", false)
+        emit("update:modelValue", false)
       }
 
       return{ 
         closeSnackBar,
+        show
       }
     }
   });

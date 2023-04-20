@@ -1,5 +1,4 @@
 <template>
-  <v-content>
     <Toaster v-model="showMsg" :message="`some error message`" />
     <v-progress-linear :indeterminate="true" color="primary" v-show="loading"></v-progress-linear>
         <v-card class="elevation-3 pa-6" min-width="400">
@@ -13,23 +12,19 @@
         <v-card-text>
           <v-form
             ref="form"
-            v-model="valid"
-            lazy-validation
             >
             <v-text-field
                 solo
                 label="Email"
-                v-model="email"
+                v-model="loginFormValues.email"
                 prepend-inner-icon="mdi-email"
-                :rules="emailVal"
             ></v-text-field>
 
             <v-text-field
                 solo
                 label="Contraseña"
-                v-model="password"
+                v-model="loginFormValues.password"
                 prepend-inner-icon="mdi-lock"
-                :rules="passVal"
             ></v-text-field>
           </v-form>
         </v-card-text>
@@ -41,7 +36,6 @@
         </div>
         <hr>
       </v-card>
-  </v-content>
 </template>
 
 <script lang="ts">
@@ -56,6 +50,10 @@
     setup(){
       const showMsg = ref(false);
       const loading = ref(false);
+      const loginFormValues = ref({
+        email: '',
+        password: '',
+      })
       onMounted(() => {
         setTimeout(() => {
           showMsg.value = true;
@@ -70,6 +68,7 @@
         validate,
         showMsg,
         loading,
+        loginFormValues,
       }
     }
   });

@@ -18,7 +18,7 @@ export default defineComponent({
   },
   setup(){
     onMounted(() => {
-      console.log("woomy");
+      // pending initialization
     });
 
   },
