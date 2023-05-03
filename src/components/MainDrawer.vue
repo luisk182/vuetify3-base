@@ -1,6 +1,6 @@
 <template>
  <nav>
-    <v-app-bar>
+    <v-app-bar color="blue" dark>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="text-uppercase grey--text">
         <span class="font-weight-light">Dashboard</span>
@@ -8,37 +8,34 @@
       <v-spacer></v-spacer>
 
       <v-menu
-        left
-        bottom
+        transition="slide-y-transition"
       >
-        <template v-slot:activator="{ on, attrs }">
+        <template v-slot:activator="{ props }">
           <v-btn
             icon
-            v-bind="attrs"
-            v-on="on"
+            v-bind="props"
           >
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
 
         <v-list>
-          <v-list-item @click="logOut">
-            <v-list-item-title >
-              Cerrar sesión
-            </v-list-item-title>
+          <v-list-item 
+            title="Perfil" 
+            @click="logOut"
+            prepend-icon="mdi-account">
           </v-list-item>
+          <v-list-item 
+          @click="logOut" 
+          title="Cerrar sesión"
+          prepend-icon="mdi-logout"
+          ></v-list-item>
         </v-list>
       </v-menu>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" dark app>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="text-h6">
-            Menu
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+      <v-list-item title="Menu"></v-list-item>
 
       <v-divider></v-divider>
 
@@ -73,7 +70,7 @@ export default defineComponent({
         },
         {
           title: 'Usuarios',
-          icon: 'mdi-image',
+          icon: 'mdi-account-group',
           to: 'dashboard/users',
           value: 'users',
         },
