@@ -1,6 +1,7 @@
 <template>
     <Toaster v-model="showMsg" :message="`some error message`" />
     <v-progress-linear :indeterminate="true" color="primary" v-show="loading"></v-progress-linear>
+      <form @submit.prevent="onSubmit">
         <v-card class="elevation-3 pa-6" min-width="400">
           <v-img
           :src="require('../assets/logo.svg')"
@@ -9,38 +10,44 @@
           height="75"
         />
         <v-spacer></v-spacer>
-        <v-card-text>
-          <v-form
-            ref="form"
-            >
-            <v-text-field
-                solo
-                label="Email"
-                v-model="loginFormValues.email"
-                prepend-inner-icon="mdi-email"
-            ></v-text-field>
 
-            <v-text-field
-                solo
-                label="Contraseña"
-                v-model="loginFormValues.password"
-                prepend-inner-icon="mdi-lock"
-            ></v-text-field>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn block color="blue" @click="validate" :disabled="loading" dark>Iniciar sesón</v-btn>
-        </v-card-actions>
+          <v-card-text>
+  
+              <v-text-field
+                  solo
+                  label="Email"
+                  v-model="email"
+                  prepend-inner-icon="mdi-email"
+                  :error-messages="errors.email"
+                  name="email"
+              ></v-text-field>
+
+              <v-text-field
+                  solo
+                  label="Password"
+                  v-model="password"
+                  prepend-inner-icon="mdi-lock"
+                  :error-messages="errors.password"
+                  name="password"
+              ></v-text-field>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn type="submit" block color="blue" dark :disabled="!meta.valid">Iniciar sesón</v-btn>
+          </v-card-actions>
+
         <div>
           <v-btn text block :disabled="loading" @click="$emit('change-login')">¿Olvidaste tu contraseña?</v-btn>
         </div>
         <hr>
       </v-card>
+    </form>
 </template>
 
 <script lang="ts">
   import { defineComponent, onMounted, ref } from "vue";
   import Toaster from "@/components/Toaster.vue";
+  import * as yup from "yup";
+  import { useForm, useField } from "vee-validate";
 
   export default defineComponent({
     name: 'LoginForm',
@@ -50,25 +57,41 @@
     setup(){
       const showMsg = ref(false);
       const loading = ref(false);
-      const loginFormValues = ref({
-        email: '',
-        password: '',
+
+      const schema = yup.object({
+        email: yup.string().required().email(),
+        password: yup.string().required().min(6),
       })
-      onMounted(() => {
-        setTimeout(() => {
-          showMsg.value = true;
-      }, 1000);
+
+
+      const { errors, meta, handleSubmit } = useForm({
+        validationSchema: schema,
       });
 
-      const validate = () => {
-        console.log("some")
+      const { value: email } = useField("email");
+      const { value: password } = useField("password");
+
+      const onSubmit = handleSubmit((values) => {
+        console.log(values);
+      });
+
+      const rand = () => {
+        console.log("random")
       }
 
+      onMounted(() => {
+        // Pending validation
+      });
+
       return {
-        validate,
+        email,
+        password,
         showMsg,
         loading,
-        loginFormValues,
+        onSubmit,
+        rand,
+        errors,
+        meta,
       }
     }
   });

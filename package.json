@@ -10,11 +10,13 @@
     "@mdi/font": "5.9.55",
     "core-js": "^3.6.5",
     "roboto-fontface": "*",
+    "vee-validate": "^4.8.6",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vuetify": "^3.0.0-beta.0",
     "vuex": "^4.0.0-0",
-    "webfontloader": "^1.0.0"
+    "webfontloader": "^1.0.0",
+    "yup": "^1.1.1"
   },
   "devDependencies": {
     "@types/webfontloader": "^1.0.0",
